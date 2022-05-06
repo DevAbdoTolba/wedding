@@ -20,5 +20,5 @@ the seconed state if the name is site to any value, in thi case the invitation t
 
 ![image](https://user-images.githubusercontent.com/100101090/167038325-42508122-9c1c-4b34-80ac-a6dff655b874.png)
 
-# Thanks to
+# Special thanks
 [Dev. Ahmed hany](https://github.com/dev-ahmedhany)
