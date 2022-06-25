@@ -1,58 +1,45 @@
-
 //change names from link var
 
-let params = (new URL(document.location)).searchParams;
+let params = new URL(document.location).searchParams;
 
-let name = params.get('name');
+let name = params.get("name");
 document.getElementById("h1").innerHTML = name;
-
-
-
 
 //TEXT morphing on spoiler
 const morphTime = 1;
-const cooldownTime = .8;
+const cooldownTime = 0.8;
 let texts1;
+var r = document.querySelector(":root");
 
+console.log('"' + name + '"');
 if (name == null) {
-  texts1 = [
-    "دعوة",
-    "زفاف",
-    "يوليو 3"
-  ];
-  document.getElementById("changeInnerHTML").innerHTML = '';
-  document.getElementById("smlfont").style = "font-size: larger; ";
+  texts1 = ["دعوة خاصة", "٣ يوليو", "المس لفتح الدعوة"];
 
-}
-else {
-  texts1 = [
-    "دعوة",
-    "إلى",
-    "الأستاذ",
-    name
-  ];
+  r.style.setProperty("--n1", "'دعوة خاصة'");
+  r.style.setProperty("--n2", "'يوم الأحد 3 يوليو'");
+  r.style.setProperty("--n3", "'المس لفتح الدعوة'");
+
+  // document.getElementById("changeInnerHTML").innerHTML = '';
+  document.getElementById("smlfont").style = "font-size: larger; ";
+} else {
+  texts1 = ["دعوة إلى", name, "المس لفتح الدعوة"];
+
+  r.style.setProperty("--n1", "'دعوة خاصة إلى'");
+  r.style.setProperty("--n2", '"' + name + '"');
+  r.style.setProperty("--n3", "'المس لفتح الدعوة'");
 }
 
 const texts = texts1;
 
-
-
 const elts = {
   text1: document.getElementById("text1"),
-  text2: document.getElementById("text2")
+  text2: document.getElementById("text2"),
 };
-
-
-
-
 
 let textIndex = texts.length - 1;
 let time = new Date();
 let morph = 0;
 let cooldown = cooldownTime;
-
-elts.text1.textContent = texts[textIndex % texts.length];
-elts.text2.textContent = texts[(textIndex + 1) % texts.length];
 
 function doMorph() {
   morph -= cooldown;
@@ -111,47 +98,33 @@ function animate() {
   }
 }
 
-animate();
-
-
-
 //Toast TOASTY notfication
-var option =
-{
+var option = {
   animation: true,
-  delay: 5000
+  delay: 5000,
 };
 
 function Toasty() {
-  var toastHTMLElement = document.getElementById('EpicToast');
+  var toastHTMLElement = document.getElementById("EpicToast");
 
   var toastElement = new bootstrap.Toast(toastHTMLElement, option);
 
   toastElement.show();
 }
 
-
 //Scroll go down
-document.getElementById("scrollDown").addEventListener("click", scrollFunction1);
+document
+  .getElementById("scrollDown")
+  .addEventListener("click", scrollFunction1);
+
 function scrollFunction1() {
-  document.getElementById("getMe_longUxAnimation").classList.add("longUxAnimation");
   let e = document.getElementById("el1");
   e.scrollIntoView({
-    block: 'start',
-    behavior: 'smooth',
-    inline: 'start'
+    block: "start",
+    behavior: "smooth",
+    inline: "start",
   });
-};
-
-
-
-
-
-
-
-
-
-
+}
 
 // Loading loader
 
@@ -159,42 +132,48 @@ function scrollFunction1() {
 //   document.querySelector(".loader-wrapper").classList.add("fadeOut");
 
 // });
-
-
-
+var audio = document.getElementById("audio_playo24");
+const nmuteic = document.getElementById("nmuteic");
+const muteic = document.getElementById("muteic");
+var myAudio = document.getElementById("audio_playo24");
 
 // SPOILER
-document.body.addEventListener("click", spoiler)
+document.body.addEventListener("click", spoiler);
 
-
-let spoilerCounter = 0
+let spoilerCounter = 0;
 function spoiler() {
-  spoilerCounter++
+  spoilerCounter++;
   if (spoilerCounter === 1) {
-    document.getElementById("getMe_element1").classList.add('element1');
-    document.getElementById("getMe_element2").classList.add('element2');
+    let rmvMe_circles = document.getElementById("rmvMe_circles");
+    rmvMe_circles.classList.remove();
+    document.getElementById("getMe_element1").classList.add("element1");
+    document.getElementById("getMe_element2").classList.add("element2");
     document.getElementsByClassName("loader-wrapper");
     document.getElementById("spoilerDiv").remove();
+    document.getElementById("getMe_bsmllah").classList.add("bsmllah");
 
+    if (audio.muted) {
+      nmuteic.style.display = "none";
+      muteic.style.display = "block";
+    } else {
+      nmuteic.style.display = "block";
+      muteic.style.display = "none";
+    }
+    audio.play();
     // document.getElementById("loader-wrapper").remove();
 
-    document.getElementById("getMe_bsmllah").classList.add('bsmllah')
     // document.getElementById("getMe_w3-animate-fading").classList.add('w3-animate-fading')
   }
-
 }
-
-
-
-
 
 // toast popup
 function launch_toast() {
-  var x = document.getElementById("toast")
+  var x = document.getElementById("toast");
   x.className = "show";
-  setTimeout(function () { x.className = x.className.replace("show", ""); }, 5000);
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 5000);
 }
-
 
 // Copy to clipboard
 
@@ -203,7 +182,43 @@ document.getElementById("copyBtn").addEventListener("click", function () {
   copyText.select();
   copyText.setSelectionRange(0, 99999);
   navigator.clipboard.writeText(copyText.value);
-
 });
+var cm = false;
+function toggleMute() {
 
+  cm =!cm
+  console.log("Sound is " +cm)
+  if (audio.muted) {
+    nmuteic.style.display = "block";
+    muteic.style.display = "none";
+  } else {
+    nmuteic.style.display = "none";
+    muteic.style.display = "block";
+  }
+  myAudio.muted = !myAudio.muted;
+}
 
+window.addEventListener("focus", (event) => {
+  if (myAudio.muted && cm > 0) {
+    myAudio.muted = !myAudio.muted;
+    if (audio.muted) {
+      nmuteic.style.display = "none";
+      muteic.style.display = "block";
+    } else {
+      nmuteic.style.display = "block";
+      muteic.style.display = "none";
+    }
+  }
+});
+window.addEventListener("blur", (event) => {
+  if (!myAudio.muted && cm > 0) {
+    myAudio.muted = !myAudio.muted;
+    if (audio.muted) {
+      nmuteic.style.display = "none";
+      muteic.style.display = "block";
+    } else {
+      nmuteic.style.display = "block";
+      muteic.style.display = "none";
+    }
+  }
+});
